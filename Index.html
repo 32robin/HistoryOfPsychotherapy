@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>심리치료 이론 계보도</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: 4 category lanes x 4 derivation columns. Every node and every arrow label is visible from the start; clicking a node opens its notes beside the map. */
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --ink: #16202b;
+  --ink2: #4a5866;
+  --ink3: #6f7b89;
+  --line: #d3d9e0;
+  --band: #eaedf1;
+  --dyn: #8a3b6a;
+  --exp: #1d7a74;
+  --cog: #2f5fae;
+  --sys: #a8620f;
+  --org: #6e7782;
+  --react: #c2410c;
+  --merge: #6b4fbb;
+  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  --font-display: "Noto Serif KR", "Batang", serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --card: #1b222b; --ink: #e8edf2; --ink2: #aab6c2; --ink3: #8a96a3;
+    --line: #2f3a46; --band: #171d25;
+    --dyn: #d68cbc; --exp: #5fc4bc; --cog: #82a9ec; --sys: #e0a255; --org: #98a2ad;
+    --react: #f08a5d; --merge: #b9a2f0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --card: #1b222b; --ink: #e8edf2; --ink2: #aab6c2; --ink3: #8a96a3;
+  --line: #2f3a46; --band: #171d25;
+  --dyn: #d68cbc; --exp: #5fc4bc; --cog: #82a9ec; --sys: #e0a255; --org: #98a2ad;
+  --react: #f08a5d; --merge: #b9a2f0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 800px; margin: 0 auto; padding: 28px 20px 56px; }
+header h1 { font-family: var(--font-display); font-size: 30px; line-height: 1.25; margin: 0 0 6px; text-wrap: balance; }
+header p { margin: 0; color: var(--ink2); max-width: 70ch; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 22px 0 14px; }
+.group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.group > .gl { font-size: 12px; color: var(--ink3); margin-right: 2px; }
+.chip { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 4px 11px 4px 9px; font: inherit; font-size: 13px; cursor: pointer; }
+.chip[aria-pressed="false"] { color: var(--ink3); background: transparent; }
+.chip:focus-visible { outline: 2px solid var(--cog); outline-offset: 2px; }
+.chip svg { width: 28px; height: 10px; overflow: visible; }
+.dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+.mapbox { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.mapbox svg { display: block; width: 100%; min-width: 700px; height: auto; }
+aside { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px 16px; }
+aside h2 { font-family: var(--font-display); font-size: 21px; line-height: 1.3; margin: 0 0 6px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink2); border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; }
+.who { color: var(--ink2); font-size: 13.5px; margin: 0 0 10px; }
+.integ-note { font-size: 12.5px; color: var(--ink2); background: var(--band); border-radius: 8px; padding: 6px 10px; margin: 0 0 10px; }
+aside ul { margin: 0 0 12px; padding-left: 18px; }
+aside li { margin: 0 0 6px; font-size: 14px; }
+aside h3 { font-size: 12.5px; font-weight: 600; color: var(--ink3); margin: 14px 0 6px; }
+.rel { list-style: none; padding: 0; }
+.rel li { padding: 0; margin: 0 0 4px; }
+.rel button { width: 100%; text-align: left; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; padding: 6px 9px; font: inherit; font-size: 13.5px; cursor: pointer; display: block; }
+.rel button:hover { background: var(--band); }
+.rel button:focus-visible { outline: 2px solid var(--cog); outline-offset: 1px; }
+.hint { color: var(--ink3); font-size: 12.5px; margin: 10px 0 0; }
+
+/* svg parts */
+.band { fill: var(--band); }
+.lane-label { fill: var(--ink2); font-size: 13.5px; font-weight: 600; }
+.col-head { fill: var(--ink2); font-size: 12.5px; font-weight: 500; letter-spacing: .02em; }
+.node { cursor: pointer; }
+.node .box { fill: var(--card); stroke: var(--line); stroke-width: 1.2; }
+.node .t { fill: var(--ink); font-weight: 600; }
+.node .s { fill: var(--ink2); font-size: 11.5px; }
+.node.origin .box { stroke-dasharray: 4 3; }
+.node:focus { outline: none; }
+.node:focus-visible .box { stroke: var(--cog); stroke-width: 3; }
+.node.sel .box { stroke: var(--ink); stroke-width: 2.6; }
+.pill rect { fill: var(--card); stroke: var(--ink3); stroke-width: 1; }
+.pill text { fill: var(--ink2); font-size: 11px; font-weight: 500; }
+.edge { fill: none; transition: stroke-width .15s; opacity: .8; }
+.e-react { stroke: var(--react); stroke-width: 2.3; }
+.e-extend { stroke: var(--ink2); stroke-width: 1.7; }
+.e-merge { stroke: var(--merge); stroke-width: 1.9; stroke-dasharray: 7 4; }
+.e-infl { stroke: var(--ink2); stroke-width: 1.6; stroke-dasharray: 1.5 4.5; stroke-linecap: round; }
+.e-root { stroke: var(--org); stroke-width: 1.8; stroke-dasharray: 11 4 2 4; }
+.edge.hot { opacity: 1; stroke-width: 3.2; }
+.edge.hidden { display: none; }
+.mk-react { fill: var(--react); } .mk-extend { fill: var(--ink2); } .mk-merge { fill: var(--merge); } .mk-infl { fill: var(--ink2); } .mk-root { fill: var(--org); }
+.elabel rect { fill: var(--card); stroke: var(--line); }
+.elabel.l-react rect { stroke: var(--react); }
+.elabel.l-merge rect { stroke: var(--merge); }
+.elabel text { fill: var(--ink); font-size: 12.5px; }
+.sign { margin-top: 10px; font-size: 13px; line-height: 1.65; color: var(--ink2); }
+.sign a { color: var(--cog); text-decoration: none; }
+.sign a:hover { text-decoration: underline; }
+.sign.contact { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); }
+footer { margin-top: 26px; color: var(--ink3); font-size: 12.5px; max-width: 90ch; }
+.refh { margin: 0 0 4px; font-weight: 600; color: var(--ink2); }
+.refs { margin: 0; padding-left: 0; list-style: none; }
+.refs li { margin: 0 0 3px; padding-left: 2em; text-indent: -2em; }
+@media (max-width: 520px) {
+  header h1 { font-size: 25px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .edge { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>심리치료 이론 계보도</h1>
+    <p>심리치료 이론이 서로 어디서 갈라지고 합쳐졌는지를 나타냈습니다.</p>
+    <div class="sign">
+      <div>제작: 별빛상담심리연구소</div>
+    </div>
+  </header>
+
+  <div class="controls" role="group" aria-label="보기 설정">
+    <div class="group" id="cat-legend" aria-label="범주 색"></div>
+    <div class="group" id="edge-filters"><span class="gl">연결 종류</span></div>
+  </div>
+
+  <div class="stage">
+    <div class="mapbox" id="mapbox"></div>
+    <aside id="detail" aria-live="polite"></aside>
+  </div>
+
+  <footer>
+    <p class="refh">참고문헌</p>
+    <ul class="refs">
+      <li>Bowlby, J. (1969). <em>Attachment and loss: Vol. 1. Attachment</em>. Basic Books.</li>
+      <li>Corey, G. (2024). <em>Theory and practice of counseling and psychotherapy</em> (11th ed.). Cengage.</li>
+      <li>Fosha, D. (2000). <em>The transforming power of affect: A model for accelerated change</em>. Basic Books.</li>
+      <li>Gilbert, P. (2010). <em>Compassion focused therapy: Distinctive features</em>. Routledge.</li>
+      <li>Hayes, S. C. (2004). Acceptance and commitment therapy, relational frame theory, and the third wave of behavioral and cognitive therapies. <em>Behavior Therapy, 35</em>(4), 639–665.</li>
+      <li>Levine, P. A. (1997). <em>Waking the tiger: Healing trauma</em>. North Atlantic Books.</li>
+      <li>Ogden, P., Minton, K., &amp; Pain, C. (2006). <em>Trauma and the body: A sensorimotor approach to psychotherapy</em>. W. W. Norton.</li>
+      <li>Pedersen, P. B. (1991). Multiculturalism as a generic approach to counseling. <em>Journal of Counseling &amp; Development, 70</em>(1), 6–12.</li>
+      <li>Shapiro, F. (2018). <em>Eye movement desensitization and reprocessing (EMDR) therapy</em> (3rd ed.). Guilford Press.</li>
+      <li>Young, J. E., Klosko, J. S., &amp; Weishaar, M. E. (2003). <em>Schema therapy: A practitioner's guide</em>. Guilford Press.</li>
+    </ul>
+    <div class="sign contact">
+      <div>E-Mail: <a href="mailto:32robin@naver.com">32robin@naver.com</a></div>
+      <div>Naver Blog: <a href="https://blog.naver.com/kimgunagp" target="_blank" rel="noopener">https://blog.naver.com/kimgunagp</a></div>
+      <div>Tistory: <a href="https://starlightcounseling.tistory.com" target="_blank" rel="noopener">https://starlightcounseling.tistory.com</a></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var NW = 147, NH = 60, COLX = [24, 354.5, 685], Y0 = 84, RU = 76, W = 856;
+
+  var CATS = {
+    dyn: { name: "정신역동", v: "--dyn" },
+    exp: { name: "체험·관계 중심", v: "--exp" },
+    cog: { name: "인지행동", v: "--cog" },
+    sys: { name: "체계·포스트모던", v: "--sys" },
+    org: { name: "철학·사회·언어의 기원", v: "--org" }
+  };
+  var LANES = [
+    { n: 1, cat: "dyn", label: "정신역동" },
+    { n: 2, cat: "exp", label: "체험·관계 중심" },
+    { n: 3, cat: "cog", label: "인지행동" },
+    { n: 4, cat: "sys", label: "체계·포스트모던" }
+  ];
+  var COLHEAD = ["뿌리와 계기", "주요 접근", "파생과 결합"];
+
+  var INTEG = {
+    "기술적 통합": "이론은 따지지 않고 효과적인 기법을 골라 쓰는 통합이다.",
+    "이론적 통합": "둘 이상의 이론을 개념 수준에서 종합해 더 풍부한 틀을 만드는 통합이다.",
+    "동화적 통합": "한 학파를 토대로 두고 다른 학파의 기법을 선택적으로 받아들이는 통합이다."
+  };
+
+  var NODES = [
+    { id: "psa", lane: 1, col: 0, row: 0.5, cat: "dyn", title: "정신분석", sub: ["Freud", "무의식, 인격 재구성"],
+      who: "Sigmund Freud.",
+      pts: ["Freud의 모델은 많은 이론이 확장하거나 수정하거나 반발한 기준점이다.", "대부분의 심리치료 이론은 정신분석을 확장했거나, 수정했거나, 반발해서 나왔다."] },
+    { id: "adler", lane: 1, col: 1, row: 0, cat: "dyn", title: "아들러 치료", sub: ["Adler · Dreikurs", "1911 사임, 1912 학회"],
+      who: "Adler, Dreikurs. 현대 모델은 Rasmussen, Sperry와 Sperry.",
+      pts: ["1911년 빈 정신분석학회 회장직을 사임하고 1912년 개인심리학회를 세웠다.", "생물학적 본능 결정론 대신 사회적 관계성, 목적성, 의식을 강조한다.", "Dreikurs가 Adler 사후(1937) 미국에 보급했다.", "Ansbacher는 Horney, Fromm, Sullivan을 ‘신프로이트’보다 ‘신아들러’로 부르는 편이 적절하다고 본다.", "현대 모델로는 Rasmussen의 적응적 재지향 치료와 Sperry와 Sperry의 패턴 중심 사례개념화가 있다."] },
+    { id: "psadev", lane: 1, col: 1, row: 1, cat: "dyn", title: "정신분석 발전", sub: ["자아심리 · 자기심리", "대인관계 · 관계적 · 단기"],
+      who: "Anna Freud, Hartmann, Erikson(자아심리학), Kohut(자기심리학), Sullivan(대인관계), Mitchell(관계적) 등.",
+      pts: ["자아심리학: Anna Freud의 방어기제, Hartmann의 자아 적응 기능, Erikson의 평생 심리사회 발달.", "자기심리학(Kohut): 공감을 정신분석적 치유의 중심에 둔다.", "대인관계 정신분석(Sullivan): 성격이 대인관계 속에서 형성된다고 본다.", "관계적 정신분석(Mitchell 등): 상담을 치료자와 내담자가 함께 만드는 쌍방향 과정으로 본다.", "단기 역동치료(Malan, Davanloo 등): 정신분석의 깊이를 유지하면서 기간을 줄이려 했다."] },
+
+    { id: "objrel", lane: 1, col: 2, row: 1, cat: "dyn", title: "대상관계이론", sub: ["Klein · Winnicott · Kernberg", "애착과 분리, 내면화된 타인"],
+      who: "Klein, Fairbairn, Winnicott, Kernberg 등. 서로 꽤 다른 여러 이론가의 작업을 아우른다.",
+      pts: ["애착과 분리에 특히 관심을 두고, 타인과의 경험을 내면화해 마음속에 타인의 표상을 세우는 방식이 이후의 대인관계에 영향을 준다고 본다.", "대상(object)은 Freud가 욕구를 충족시키는 것, 곧 감정이나 충동의 대상이 되는 중요한 사람이나 사물을 가리키던 말이다. 중요한 타인(other)과 같은 뜻으로 쓴다.", "Klein은 1920~40년대 유아의 내적 환상과 대상 관계를 이론화했다. Fairbairn은 인간이 쾌락이 아니라 관계를 추구한다고 보았다.", "Winnicott은 ‘충분히 좋은 어머니’, 안아 주는 환경, 참자기와 거짓자기 개념을 남겼다.", "정통 정신분석에서 갈라져 나왔지만, Kernberg는 점점 다양해지는 이 학파의 생각을 고전 정신분석의 틀 안에서 통합하려 했다.", "Mahler의 분리-개별화 이론도 이 흐름에 큰 영향을 주었다. Mahler는 자아심리학으로 분류되기도 한다.", "오늘날에는 정신분석의 한 갈래를 넘어 독립된 상담·치료 이론으로 쓰이기도 한다."] },
+
+    { id: "attach", lane: 2, col: 0, row: 5.8, cat: "org", origin: true, title: "애착 이론", sub: ["Bowlby · Ainsworth", "양육자와의 유대"],
+      who: "John Bowlby, Mary Ainsworth.",
+      pts: ["정신분석가였던 Bowlby가 정신분석(대상관계)과 동물행동학(Lorenz, Harlow)을 결합해 발전시켰다. 1958년 논문에서 시작해 1969~1980년의 3부작으로 정리했다.", "Ainsworth는 낯선 상황 실험으로 안정, 회피, 저항(양가) 애착을 구분했고, 이후 Main과 Solomon이 혼란 애착을 추가했다.", "초기 관계 경험이 내적 작동 모델로 남아 이후의 대인관계와 정서조절에 영향을 준다고 본다.", "정서중심 부부치료(Johnson), 정신화 기반 치료(MBT), AEDP, 심리도식치료, 감각운동 심리치료 등의 바탕이 되었고, 이후 관계적 정신분석에도 영향을 주었다."] },
+    { id: "body", lane: 2, col: 0, row: 7.4, cat: "org", origin: true, title: "신체기반 접근", sub: ["Reich · Lowen", "몸과 정서의 연결"],
+      who: "Wilhelm Reich, Alexander Lowen 등.",
+      pts: ["마음의 문제가 몸의 긴장, 자세, 호흡, 움직임으로 나타난다고 보고 몸을 치료에 활용하는 흐름이다.", "Freud의 제자였던 Reich는 성격 방어가 근육의 긴장(성격 갑옷)으로 나타난다고 보았다. 게슈탈트치료의 Perls도 Reich에게 분석을 받았다.", "Lowen이 Reich를 이어 생체에너지 분석을 발전시켰다.", "Gindler와 Selver의 감각 알아차림 전통은 Levine의 SE에, Ron Kurtz의 Hakomi는 Ogden의 SP에 직접 영향을 주었다.", "같은 시기 van der Kolk 등의 트라우마 연구와 함께 신체 기반 트라우마 치료라는 흐름을 이룬다."] },
+    { id: "aedp", lane: 2, col: 2, row: 5.8, cat: "exp", title: "AEDP", sub: ["Fosha", "변형적 정서 · 애착"],
+      who: "Diana Fosha.",
+      pts: ["정서 경험과 치료자의 정서적 현존으로 치유와 변형을 이끄는 경험적 역동 치료다. Fosha의 2000년 저서로 처음 소개되었다.", "Davanloo의 집중적 단기 역동치료(ISTDP)와 Malan의 단기 역동치료에서 출발했고, ‘갈등의 삼각형’ 같은 개념을 이어받았다.", "애착 이론, 정서 이론, 신체 작업, 변형 연구를 통합한다.", "병리보다 인간이 가진 치유와 성장의 힘(변형 경향성)을 강조하며, 이는 인본주의의 자기실현 경향과도 맞닿아 있다.", "안전한 치료 관계 안에서 고통스러운 정서를 끝까지 경험하고 처리하도록 돕는다."] },
+    { id: "se", lane: 2, col: 2, row: 6.9, cat: "exp", title: "신체경험치료 (SE)", sub: ["Levine", "신체 감각 · 트라우마"],
+      who: "Peter Levine.",
+      pts: ["트라우마가 완결되지 못한 방어 반응으로 신경계에 남는다고 보고, 신체 감각을 통해 이를 풀어내는 트라우마 치료다.", "1960년대 말부터 발전했고, 위협에 대한 동물의 반응(투쟁, 도피, 얼어붙음)에서 착안했다.", "사건의 내용을 자세히 말하기보다 지금 느껴지는 신체 감각에 주의를 둔다. 조금씩 다루는 적정(titration)과 활성과 안정 사이를 오가는 진자운동(pendulation)을 쓴다.", "신경계 조절과 안전감을 강조하며 Porges의 다미주 이론과 자주 연결된다. 다만 다미주 이론은 과학적 논쟁 중이다.", "효과 연구는 아직 제한적이다."] },
+    { id: "sp", lane: 2, col: 2, row: 7.9, cat: "exp", title: "감각운동 심리치료 (SP)", sub: ["Ogden", "신체 · 애착 · 트라우마"],
+      who: "Pat Ogden.",
+      pts: ["신체 감각, 움직임, 자세를 통해 처리되지 못한 경험을 다루는 트라우마 치료다.", "Ron Kurtz의 Hakomi(신체 중심 심리치료)에서 발전했고, 애착 이론, 신경과학, 정신역동 요소를 통합한다.", "정보 처리를 인지, 정서, 감각운동의 세 수준으로 나누고 하향식과 상향식 처리를 함께 쓴다.", "지금 일어나는 신체 경험을 마음챙김으로 알아차리도록 한다.", "효과 연구는 아직 제한적이다."] },
+    { id: "emdr", lane: 3, col: 2, row: 9.6, cat: "cog", title: "EMDR", sub: ["Shapiro", "안구운동 · 기억 재처리"],
+      who: "Francine Shapiro.",
+      pts: ["1980년대 후반 개발된 트라우마 치료다.", "적응적 정보처리 모델에 따라, 처리되지 못한 외상 기억이 증상의 원인이라고 본다.", "트라우마 기억을 떠올리며 안구 운동 같은 양측 자극을 병행해 기억을 재처리한다.", "병력 청취, 준비, 평가, 둔감화, 설치, 신체 검사, 종결, 재평가의 8단계로 진행한다.", "인지행동치료와 겹치는 요소(노출 등)가 있지만, 보통 독자적인 접근으로 본다. PTSD 치료로 널리 인정되며, 안구운동 자체가 효과에 얼마나 기여하는지는 논쟁 중이다."] },
+    { id: "schema", lane: 3, col: 2, row: 10.7, cat: "cog", title: "심리도식치료", sub: ["Young", "초기 부적응 도식"],
+      who: "Jeffrey Young.",
+      pts: ["기존 인지행동치료로 잘 낫지 않는 만성적인 성격 문제를 위해 개발했다.", "어린 시절 충족되지 못한 핵심 정서 욕구에서 생긴 초기 부적응 도식을 변화 대상으로 한다.", "도식, 대처 방식(굴복, 회피, 과잉보상), 도식 모드 개념으로 사례를 이해한다.", "인지행동, 애착, 대상관계, 게슈탈트(체험 기법)를 통합한다. 치료 관계에서 ‘제한된 재양육’을 제공한다."] },
+    { id: "cft", lane: 3, col: 2, ax: 685, row: 16.4, cat: "cog", title: "자비중심치료 (CFT)", sub: ["Gilbert", "수치심 · 자기비난"],
+      who: "Paul Gilbert.",
+      pts: ["수치심과 자기비난이 높은 사람을 위해 개발했다. Gilbert는 인지행동치료 배경에서 출발했다.", "진화심리학, 애착, 신경과학을 바탕으로 위협, 추동(성취), 진정(안전)의 세 가지 정서조절 체계를 구분한다.", "자비를 훈련해 과활성된 위협 체계를 낮추고 진정 체계를 키운다. 자비로운 마음 훈련, 자비로운 이미지, 자기자비 편지 같은 기법을 쓴다.", "마음챙김과 인지행동 요소를 함께 써서 보통 제3의 물결로 분류된다."] },
+    { id: "behism", lane: 3, col: 0, row: 11.8, cat: "org", origin: true, title: "행동주의 이론", sub: ["Pavlov · Watson · Skinner", "학습으로 설명하는 행동"],
+      who: "Ivan Pavlov, John Watson, B. F. Skinner 등.",
+      pts: ["심리학을 관찰 가능한 행동의 과학으로 보고, 행동이 학습으로 형성되고 바뀐다고 설명하는 이론이다.", "Pavlov의 고전적 조건형성은 중립 자극이 반복된 짝짓기를 통해 반응을 일으키게 되는 과정을 밝혔다.", "Thorndike의 효과의 법칙은 만족스러운 결과가 따르는 행동이 강해진다고 보아 조작적 조건형성의 선구가 되었다.", "Watson은 1910년대에 의식이 아니라 행동을 연구 대상으로 삼는 행동주의를 내세웠다.", "Skinner의 조작적 조건형성은 행동이 결과(강화와 처벌)에 따라 늘거나 줄어든다고 설명했다.", "이 학습 원리를 문제 행동의 이해와 변화에 적용한 것이 행동치료다."] },
+    { id: "aba", lane: 3, col: 1, row: 10.7, cat: "cog", title: "응용행동분석 (ABA)", sub: ["조작적 조건형성", "ABC 모델 · 강화"],
+      who: "Skinner의 조작적 조건형성에 뿌리를 둔 응용 분야.",
+      pts: ["조작적 조건형성의 원리를 실제 문제 행동에 적용하는 구조화된 체계적 접근이다.", "문제를 기능적으로 이해하고, 선행 사건과 결과를 바꿔서 다룬다(ABC 모델).", "조작적 절차는 정적 강화, 부적 강화, 소거, 정적 처벌, 부적 처벌이며, 부모 기술 훈련과 자기관리 프로그램의 바탕이 된다.", "가능한 한 혐오적이지 않은 방법을 쓰는 것이 원칙이고, 정적 강화가 가장 강력한 변화 수단으로 알려져 있다.", "교육, 지역사회, 가정 환경에서 자폐 스펙트럼 장애 치료에 쓰인다. 구체적인 목표 행동을 정해 변화시킨다."] },
+    { id: "exphil", lane: 2, col: 0, row: 2.7, cat: "org", origin: true, title: "실존 철학", sub: ["Kierkegaard · Nietzsche", "Heidegger · Sartre · Buber"],
+      who: "실존치료의 기초가 된 다섯 철학자.",
+      pts: ["Kierkegaard는 불안, Nietzsche는 의지, Heidegger는 진정한 존재, Sartre는 선택과 책임, Buber는 I/Thou를 남겼다."] },
+    { id: "exist", lane: 2, col: 1, row: 2.7, cat: "exp", title: "실존치료", sub: ["Frankl · May · Yalom", "학파가 아닌 태도"],
+      who: "Frankl, May, Yalom. 그 밖에 Bugental, van Deurzen.",
+      pts: ["Frankl의 로고테라피와 Binswanger의 현존재분석처럼 1930~50년대 유럽에서 형성되었고, 2차대전 이후 소외와 무의미감 속에서 확산되었다.", "하나의 학파가 아니라 태도(철학)에 가깝다.", "기법 체계로 보는 경향에 대한 반발로 나타났고, 1960~70년대 제3세력, 곧 정신분석과 행동주의의 대안에 속하기도 한다.", "Binswanger와 Boss는 초기 실존 정신분석가다. Binswanger는 정신분석에서 출발해 옮겨 갔고, Boss는 Freud의 방법과 Heidegger의 개념을 통합하려 했다.", "Rollo May가 1950년대 미국에 소개했고, Bugental이 ‘실존-인본주의’라는 말을 만들었다."] },
+    { id: "pcc", lane: 2, col: 1, row: 3.7, cat: "exp", title: "인간중심치료", sub: ["Rogers · N. Rogers", "1940s 비지시적 상담"],
+      who: "Carl Rogers, Natalie Rogers(표현예술).",
+      pts: ["1940년대 지시적, 해석적 상담에 맞선 대안으로 비지시적 상담이 나왔다.", "네 시기: 비지시적(1940s), 내담자중심(1950s), 필요충분조건과 연구(1950s 말~70s), 인간중심(1980~90s, 적용 확대).", "Rogers는 Kierkegaard의 ‘진정한 자기 되기’를 차용했다.", "실존 관점과 많은 개념과 가치를 공유한다."] },
+    { id: "gest", lane: 2, col: 1, row: 4.7, cat: "exp", title: "게슈탈트치료", sub: ["F. · L. Perls · Polster", "지금 여기, 과정"],
+      who: "Fritz와 Laura Perls, Paul Goodman, Miriam과 Erving Polster.",
+      pts: ["Perls는 정신분석 개념의 영향을 받았지만 Freud의 기계론과 과거 억압 중심에 이의를 제기했다. Reich에게 분석을 받으며 몸과 방어에 대한 관점도 이어받았다.", "1951년 Perls, Hefferline, Goodman의 『Gestalt Therapy』로 체계화되었다.", "스스로를 실존적, 현상학적 접근이라 규정한다.", "1960~70년대 Laura Perls와 클리블랜드 학파(Polster 부부, Zinker)를 거치며 Fritz Perls의 도전적 스타일이 지지, 대화, I/Thou 중심으로 완화되었다."] },
+    { id: "eft", lane: 2, col: 2, row: 4.2, cat: "exp", title: "정서중심치료 (EFT)", sub: ["Greenberg", "인간중심 + 게슈탈트 + 정서이론"],
+      who: "Leslie Greenberg.",
+      pts: ["인간중심에서 출발해 정서가 변화에 하는 역할을 이해한 접근이다.", "인간중심의 관계 원리, 게슈탈트의 방법, 현대 정서이론을 합쳤고 실존, 체험치료의 측면도 종합한다.", "이론적 통합의 대표적인 예다."] },
+
+    { id: "beh", lane: 3, col: 1, row: 11.8, cat: "cog", title: "행동치료", sub: ["1세대 · 조건형성 원리의 적용", "관찰 가능한 행동"],
+      who: "Wolpe, Skinner(이론적 토대), Bandura(사회학습).",
+      pts: ["고전적·조작적 조건형성의 원리를 여러 문제 행동의 치료에 적용했다.", "관찰 가능한 행동, 현재의 결정 요인, 변화를 돕는 학습 경험, 개인별 맞춤 전략, 엄격한 평가를 중시한다.", "1950년대 미국(Skinner, Lindsley), 남아공(Wolpe, Lazarus), 영국(Eysenck)에서 동시에 나타났고, 정신분석적 관점에서 급진적으로 이탈한 대안이었다.", "Wolpe는 1958년 상호억제 원리에 기반한 체계적 둔감법을 내놓았다.", "1960년대 Bandura가 고전적·조작적 조건형성에 관찰학습을 결합하여 인지를 행동치료의 정당한 초점으로 만들었다.", "1970년대에 심리학, 정신의학, 교육, 사회복지 등으로 퍼졌고, 1980년대에는 인지행동치료의 부상, 건강 관련 문제로의 적용, 제3의 물결의 등장이 큰 흐름이었다.", "1·2·3세대(물결) 구분은 Hayes(2004)의 틀이다.", "불안, 우울, PTSD, 물질남용, 자폐 등 넓은 문제에 쓰이며, 효과 근거가 다른 접근보다 잘 갖춰져 있다."] },
+    { id: "rebt", lane: 3, col: 1, row: 12.8, cat: "cog", title: "REBT (Ellis)", sub: ["인지모델, 비합리적 신념에 주목"],
+      who: "Albert Ellis.",
+      pts: ["정신분석 수련 후 느린 진전에 환멸을 느껴 1955년 초 이성치료를 개발했다.", "이름은 이성치료(1955), 합리적 정서치료(RET, 1961), 합리적 정서행동치료(REBT, 1993)로 바뀌었다.", "Adler(선구), Horney(‘당위의 폭정’), Epictetus의 영향을 인정했다.", "REBT는 오늘날 인지행동 접근들의 부모이고, Ellis는 인지행동치료의 조부로 불린다."] },
+    { id: "beck", lane: 3, col: 1, row: 13.8, cat: "cog", title: "인지치료 (Beck)", sub: ["A. Beck · J. Beck", "Ellis와 독립 개발"],
+      who: "Aaron Beck, Judith Beck. Padesky(강점 기반 CBT), Meichenbaum도 인지행동 계열이다.",
+      pts: ["Aaron Beck도 처음에는 정신분석 훈련을 받았고, 이후 우울증을 연구하며 인지모델을 만들었다.", "Ellis의 REBT와 비슷한 시기에 서로 모른 채 독립적으로 개발되었다.", "Ellis는 철학적 전제에, Beck은 경험적 연구에 기반했다."] },
+    { id: "real", lane: 3, col: 1, row: 14.8, cat: "cog", title: "현실치료·선택이론", sub: ["Glasser · Wubbolding", "1960s → 1996 선택이론"],
+      who: "William Glasser, Robert Wubbolding.",
+      pts: ["Glasser는 Ventura School(소녀 교정 시설)에서 정신분석 훈련이 쓸모 적다고 보고 책임 강조로 전환했다.", "멘토 G. L. Harrington의 영향을 받았다. 1962년 강연, 1965년 『Reality Therapy』.", "1980년대 초 Powers의 통제이론을 들여왔고, 1996년 선택이론으로 이름을 바꿨다."] },
+    { id: "multi", lane: 3, col: 2, row: 11.8, cat: "cog", title: "다중양식치료", sub: ["Lazarus", "사회인지 학습이론 기반"],
+      who: "Arnold Lazarus.",
+      pts: ["사회인지 학습이론에 기반한 포괄적 행동치료다.", "여러 이론의 기법을 근거를 따져 빌려 쓰는 기술적 절충주의다."] },
+    { id: "cbt", lane: 3, col: 2, row: 13.3, cat: "cog", title: "인지행동치료 (CBT)", sub: ["2세대", "REBT · Beck · Padesky"],
+      who: "Ellis, A. Beck과 J. Beck, Padesky, Meichenbaum.",
+      pts: ["전통적 행동치료가 인지행동치료 쪽으로 넓어졌다.", "REBT가 인지행동치료 중 첫 번째이고, Beck, Padesky, Meichenbaum이 같은 우산 아래 있다.", "1980년대 이후 CBT의 부상은 행동치료의 세 가지 큰 발전 중 하나다.", "2005년 학회 이름이 ABCT(행동과 인지치료학회, 전 AABT)로 바뀐 것은 행동치료와 인지치료를 통합하는 흐름을 보여 준다."] },
+    { id: "third", lane: 3, col: 2, row: 14.8, cat: "cog", title: "인지행동치료 제3의 물결", sub: ["3세대 · 마음챙김 · 수용", "MBSR·MBCT·DBT·ACT"],
+      who: "Kabat-Zinn(MBSR), Segal 등(MBCT), Linehan(DBT), Hayes 등(ACT).",
+      pts: ["이전에는 행동치료가 다루지 않던 마음챙김, 수용, 치료관계, 영성, 가치, 명상, 지금 이 순간, 정서 표현을 받아들였다.", "다섯 가지 핵심 주제: 확장된 심리적 건강관, 넓은 치료 성과관, 수용, 마음챙김, 살 가치가 있는 삶 만들기.", "질병 모델에서 벗어나 웰니스로 향하는 것이 마음챙김·수용 치료의 핵심 방향이다.", "대표 접근은 MBSR, MBCT, DBT, ACT 네 가지다. 모두 마음챙김 전략을 쓰고, 행동치료 전통답게 경험적 검증을 받아 왔다.", "‘제3의 물결’이라는 이름은 Hayes(2004)가 붙였다. MBSR(1979), DBT(1993), ACT(1999)처럼 이미 나와 있던 접근들을 함께 묶은 것이다."] },
+    { id: "mbsr", lane: 3, col: 0, ax: 24, row: 16.4, cat: "cog", title: "MBSR", sub: ["Kabat-Zinn · 1979", "스트레스 감소 프로그램"],
+      who: "Jon Kabat-Zinn (매사추세츠대학교).",
+      pts: ["1979년, 의료 환자의 스트레스, 통증, 질병 등의 고통을 덜어 주는 훈련 프로그램을 만들 수 있는지 보려고 개발했다.", "행동치료가 아니라 불교 명상 전통에서 나왔고, 이후 MBCT의 토대가 되었다.", "마음챙김 명상을 훈련하는 8주 구조화 집단 프로그램이다. 앉기·걷기 명상, 마음챙김 요가, 몸 스캔을 하고, 하루 45분 공식 수련을 권한다.", "고통의 상당 부분이 상황이 실제와 다르기를 계속 바라는 데서 나온다고 본다. 인지 수정 기법을 가르치지 않고, 생각에 ‘역기능적’ 같은 꼬리표를 붙이지도 않는다.", "그 자체로 심리치료는 아니지만 심리치료의 보조가 될 수 있다."] },
+    { id: "mbct", lane: 3, col: 1, ax: 189.25, row: 16.4, cat: "cog", title: "MBCT", sub: ["Segal · Williams · Teasdale", "마음챙김 기반 인지치료"],
+      who: "Segal, Williams, Teasdale.",
+      pts: ["우울증을 반복해서 겪은 사람의 재발 방지를 위해 만든 프로그램이다. 주 1회 2시간씩 8주 동안 하는 집단 치료다.", "Kabat-Zinn의 MBSR을 바탕으로 만들었고, MBSR 기법에 인지행동 기술 교육을 결합했다.", "핵심 목표는 부정적 생각에 대한 알아차림과 그것과 관계 맺는 방식을 바꾸는 것이다. 자동적인 부정적 사고에 능숙하고 의도적으로 반응하도록 돕는다.", "친절과 자기연민을 필수 요소로 본다. 생각은 ‘단지 생각’이며 사실이 아님을 배우고, 재발 위협에 대비한 행동 계획도 세운다.", "인지치료를 토대로 MBSR 기법을 들여온 동화적 통합의 예다."] },
+    { id: "dbt", lane: 3, col: 1, ax: 354.5, row: 16.4, cat: "cog", title: "DBT", sub: ["Linehan", "변증법적 행동치료"],
+      who: "Marsha Linehan.",
+      pts: ["만성적으로 자살 위험이 높은 경계성 성격장애 내담자를 위해 개발했고, 지금은 이 집단의 주요 심리치료로 인정된다. 물질 의존, 우울, PTSD, 섭식장애, 자해 등으로도 적용이 넓어졌다.", "정서적 취약성과 비타당 환경이 상호작용해 정서조절 문제가 생긴다고 보는 생물사회 이론에 기반한다. 인지, 행동, 마음챙김 전략을 쓰지만 핵심은 행동 접근이다.", "수용 전략과 변화 전략을 함께 쓴다. 변증법은 수용과 변화라는 상반된 힘 사이의 긴장과 종합을 가리킨다.", "기술 훈련은 마음챙김, 고통 감내, 정서조절, 대인관계 효과성의 네 가지다. 앞의 둘은 현실을 있는 그대로 받아들이는 길, 뒤의 둘은 변화를 위한 기술이다.", "표준 DBT는 개인치료, 기술훈련 집단, 전화 코칭, 치료자 자문팀으로 이뤄지며 보통 1년 정도 진행한다.", "Zen 불교의 원리를 끌어와 마음챙김과 수용을 통합했다. 목표는 살 가치가 있는 삶을 만드는 것이다."] },
+    { id: "act", lane: 3, col: 2, ax: 519.75, row: 16.4, cat: "cog", title: "ACT", sub: ["Hayes 등", "수용전념치료"],
+      who: "Steven Hayes, Kirk Strosahl, Kelly Wilson.",
+      pts: ["수용·마음챙김 전략에 전념·행동 변화 전략을 합쳐 심리적 유연성을 높이는, 경험적 근거가 있는 개입이다. 1999년 Hayes, Strosahl, Wilson의 저서로 정리되었다.", "Skinner의 행동분석 전통에서 나온 관계구성틀이론(RFT)과 기능적 맥락주의에 기반한다.", "여섯 가지 핵심 과정은 수용, 인지적 탈융합, 현재 순간과의 접촉, 맥락으로서의 자기, 가치, 전념 행동이다.", "증상 감소가 일차 목표가 아니다. 인간의 고통을 ‘비정상’이 아니라 정상적인 심리 과정의 결과로 보고, 불쾌한 경험을 피하려는 습관에서 벗어나 가치에 따라 살도록 돕는다.", "인지적 탈융합은 생각을 사실로 받아들이지 않고 ‘그저 생각’으로 바라보게 하는 과정이다."] },
+
+    { id: "womov", lane: 4, col: 0, row: 17.9, cat: "org", origin: true, title: "2차 여성운동", sub: ["1960s", "의식고양 모임"],
+      who: "1960년대 여성운동.",
+      pts: ["여성들이 전통적 여성 역할의 제약에 대한 불만을 모아 의식고양 집단을 만들었다."] },
+    { id: "fem", lane: 4, col: 1, row: 17.9, cat: "sys", title: "페미니스트 치료", sub: ["단일 창시자 없음", "Miller · Enns · Brown"],
+      who: "Jean Baker Miller, Enns, Comas-Diaz, Bryant-Davis, Brown 등.",
+      pts: ["여성들의 집단적 노력에서 나온 첫 치료 이론이다.", "초기 치료자는 모두 여성이었지만 지금은 남성 치료자와 남성 내담자도 포함한다. ‘여성만을 위한 치료’라는 인식은 오해다.", "정신분석적 페미니스트 치료, 아들러-페미니스트 상담 같은 통합도 있었다.", "Brown(2018)은 ‘포스트모던하고 기술적으로 통합적인 접근’으로 정의한다.", "이후 억압 전반, 교차성, 다문화와 사회정의로 넓어졌다."] },
+    { id: "fam", lane: 4, col: 1, row: 18.9, cat: "sys", title: "가족체계치료", sub: ["Bowen · Satir", "Minuchin · Haley"],
+      who: "Bowen, Satir, Minuchin, Haley. 초기 실천자로 Adler와 Dreikurs, Ackerman, Bateson 연구팀 등이 있다.",
+      pts: ["1940년대 씨앗, 1950년대 체계적 가족치료로 뿌리내렸다. 체계이론과 사이버네틱스가 이론적 바탕이다.", "Adler와 Dreikurs의 open-forum 가족상담, Ackerman의 가족 면담, Bateson 연구팀의 의사소통 연구(이중구속, 1956)가 초기 흐름이다. Bowen은 다세대 관점을 세웠다.", "1960~70년대에는 정신역동, 행동, 인본주의(제1, 2, 3세력)가 주도했고, 가족체계를 제4세력이라 부르기도 한다. 다만 ‘제4세력’은 보통 다문화상담을 가리킨다.", "최근 10년 페미니즘, 다문화주의, 사회구성주의가 들어왔고, 개인 내면에 체계 개념을 적용한 내부가족체계(IFS)도 있다."] },
+    { id: "struct", lane: 4, col: 2, row: 18.9, cat: "sys", title: "구조·전략 가족치료", sub: ["Minuchin · Haley", "1960s ~ 1970s 말"],
+      who: "Salvador Minuchin, Jay Haley.",
+      pts: ["구조적 가족치료는 1960년대 초 Minuchin이 Wiltwyck School에서 빈곤층 비행 소년과 작업하며 시작되었다.", "전략적 가족치료는 Bateson 연구팀과 MRI(Mental Research Institute)의 단기치료, Milton Erickson에게서 나왔다. Haley가 대표 인물이다.", "1960년대 말 Haley가 Philadelphia Child Guidance Clinic에서 Minuchin과 합류했다.", "1970년대 말에는 구조적, 전략적 접근이 가족체계치료에서 가장 많이 쓰인 모델이었다."] },
+    { id: "gergen", lane: 4, col: 0, row: 19.9, cat: "org", origin: true, title: "사회구성주의", sub: ["Gergen", "포스트모던의 철학 틀"],
+      who: "Kenneth Gergen 등.",
+      pts: ["포스트모던은 현실이 관찰과 언어 체계와 독립해 존재하지 않는다고 본다. 사회구성주의는 그 심리학적 표현이다.", "사회구성주의, SFBT, 이야기치료, MI는 모두 ‘단일한 진리는 없고 현실은 상호작용으로 구성된다’고 가정하며 한 범주로 묶인다."] },
+    { id: "collab", lane: 4, col: 1, row: 19.9, cat: "sys", title: "협력적 언어체계", sub: ["Anderson · Goolishian", "Not Knowing 태도"],
+      who: "Harlene Anderson, Harry Goolishian.",
+      pts: ["치료를 문제 해체의 대화 체계로 보고, 치료자는 Not Knowing 태도로 대화에 들어간다.", "이 태도는 SFBT와 이야기치료의 핵심 개념으로 스며들었다."] },
+    { id: "sfbt", lane: 4, col: 2, row: 19.9, cat: "sys", title: "해결중심 단기치료", sub: ["de Shazer · Berg", "MRI 단기치료 · Erickson"],
+      who: "Steve de Shazer, Insoo Kim Berg.",
+      pts: ["MRI 단기치료에서 John Weakland와 수련한 de Shazer와 Berg가 1978년 Milwaukee의 Brief Family Therapy Center를 세우고 1980년대에 발전시켰다.", "문제의 원인보다 해결과 예외, 내담자의 강점에 초점을 둔다. 기적 질문, 척도 질문, 예외 질문을 쓴다.", "de Shazer는 Milton Erickson이 개발에 크게 영향을 주었다고 밝혔다.", "이후 협력적 언어체계의 Not Knowing 태도를 받아들였다."] },
+    { id: "narr", lane: 4, col: 2, row: 20.9, cat: "sys", title: "이야기치료", sub: ["White · Epston", "문화적 서사의 해체"],
+      who: "Michael White, David Epston.",
+      pts: ["White와 Epston이 1990년 『Narrative Means to Therapeutic Ends』로 정리했다. White는 가족치료사였고 Bateson과 Foucault의 영향을 받았다.", "문제를 사람에게서 떼어 내 바라보는 외재화를 핵심으로 한다. ‘사람이 문제가 아니라 문제가 문제다.’", "문제 이야기에 맞지 않는 독특한 결과를 찾아 새로운 이야기로 재저작한다.", "지배 문화 서사의 힘을 해체하고 새 의미를 함께 만들어 가며, Not Knowing 태도를 함께 받아들였다."] },
+    { id: "mi", lane: 4, col: 2, row: 21.9, cat: "sys", title: "동기강화상담 (MI)", sub: ["Miller · Rollnick", "인간중심 + 지시성"],
+      who: "William Miller, Stephen Rollnick.",
+      pts: ["1980년대 초 개발되었고 처음에는 문제 음주에 대한 단기 개입이었다.", "인간중심 철학에 뿌리를 두되 의도적으로 지시적인 ‘변형’이 더해진 접근이다.", "포스트모던 범주로 묶이기도 하지만, 보통은 인간중심에서 파생된 근거기반 상담 방법으로 분류한다."] },
+    { id: "coach", lane: 4, col: 2, row: 22.9, cat: "sys", title: "코칭", sub: ["인간중심 · 해결중심", "목표 달성과 성장 지원"],
+      who: "특정 창시자 없음. 여러 학문과 실천 전통에서 발전했다.",
+      pts: ["대화를 통해 개인의 목표 설정, 성장, 수행 향상을 돕는 실천 분야다.", "인간중심치료의 경청, 공감, 내담자의 자율성 존중과 해결중심 단기치료의 목표, 강점, 예외 중심 질문에서 영향을 받았다.", "치료가 문제의 진단과 해소에 무게를 두는 데 비해, 코칭은 원하는 미래와 목표 달성에 초점을 둔다."] }
+  ];
+
+  /* type: react 대안 / extend 확장·발전 / merge 결합 / infl 영향·유입 / root 철학·사회적 뿌리 */
+  var EDGES = [
+    { a: "psa", b: "adler", t: "react", l: "대안" },
+    { a: "psa", b: "psadev", t: "extend", l: "확장" },
+    { a: "psadev", b: "objrel", t: "extend", l: "확장" },
+    { a: "exphil", b: "exist", t: "root", l: "철학뿌리" },
+    { a: "psa", b: "pcc", t: "react", l: "대안" },
+    { a: "psa", b: "gest", t: "react", l: "대안" },
+    { a: "psa", b: "beh", t: "react", l: "대안" },
+    { a: "psa", b: "rebt", t: "react", l: "대안" },
+    { a: "psa", b: "beck", t: "react", l: "대안" },
+    { a: "psa", b: "real", t: "react", l: "대안" },
+    { a: "adler", b: "fam", t: "infl", l: "가족실천", loop: 64 },
+    { a: "pcc", b: "eft", t: "merge", l: "관계원리" },
+    { a: "gest", b: "eft", t: "merge", l: "알아차림" },
+    { a: "pcc", b: "mi", t: "extend", l: "계승" },
+    { a: "exist", b: "pcc", t: "infl", l: "가치공유", loop: 34, nodir: true },
+    { a: "beh", b: "multi", t: "extend", l: "절충" },
+    { a: "beh", b: "third", t: "extend", l: "마음챙김" },
+    { a: "beh", b: "cbt", t: "merge", l: "인지합류" },
+    { a: "rebt", b: "cbt", t: "extend", l: "첫 CBT" },
+    { a: "beck", b: "cbt", t: "extend", l: "독립개발" },
+    { a: "cbt", b: "third", t: "extend", l: "3물결", vert: true },
+    { a: "third", b: "mbsr", t: "infl", down: true, l: "스트레스" },
+    { a: "third", b: "mbct", t: "extend", down: true, l: "우울증" },
+    { a: "third", b: "dbt", t: "extend", down: true, l: "BPD" },
+    { a: "third", b: "act", t: "extend", down: true, l: "유연성" },
+    { a: "womov", b: "fem", t: "root", l: "운동" },
+    { a: "fam", b: "struct", t: "extend", l: "구조전략" },
+    { a: "gergen", b: "collab", t: "infl", l: "공유" },
+    { a: "collab", b: "sfbt", t: "infl", l: "Not Knowing" },
+    { a: "collab", b: "narr", t: "infl", l: "Not Knowing" },
+    { a: "gergen", b: "fam", t: "infl", l: "유입" },
+    { a: "pcc", b: "coach", t: "infl", l: "유입" },
+    { a: "sfbt", b: "coach", t: "infl", l: "유입", loop: 32 },
+    { a: "attach", b: "aedp", t: "infl", l: "유입" },
+    { a: "attach", b: "sp", t: "infl", l: "유입" },
+    { a: "attach", b: "schema", t: "infl", l: "유입" },
+    { a: "pcc", b: "aedp", t: "infl", l: "유입" },
+    { a: "body", b: "se", t: "extend", l: "확장" },
+    { a: "body", b: "sp", t: "extend", l: "확장" },
+    { a: "cbt", b: "schema", t: "extend", l: "확장", loop: 22 },
+    { a: "cbt", b: "emdr", t: "infl", l: "유입", loop: 32 },
+    { a: "third", b: "cft", t: "infl", l: "유입", down: true },
+    { a: "behism", b: "beh", t: "root", l: "뿌리" },
+    { a: "behism", b: "aba", t: "extend", l: "확장" },
+    { a: "psadev", b: "aedp", t: "extend", l: "확장" },
+    { a: "body", b: "gest", t: "infl", l: "유입" },
+    { a: "mbsr", b: "mbct", t: "extend", l: "확장" },
+    { a: "struct", b: "sfbt", t: "extend", l: "확장", loop: 24 },
+    { a: "fam", b: "narr", t: "extend", l: "확장" },
+    { a: "behism", b: "act", t: "infl", l: "유입" },
+    { a: "fem", b: "fam", t: "infl", l: "유입", loop: 34 }
+  ];
+
+  var ETYPES = [
+    { t: "react", name: "대안" },
+    { t: "extend", name: "확장·발전" },
+    { t: "merge", name: "결합" },
+    { t: "infl", name: "영향·유입" },
+    { t: "root", name: "철학·사회적 뿌리" }
+  ];
+
+  /* text wrapping: estimate widths, wrap title and sub lines to the narrow node, then size all nodes alike */
+  function cw(c, fs) {
+    if (c.charCodeAt(0) >= 0x1100) { return fs; }
+    if (c === " ") { return fs * 0.3; }
+    if (/[A-Z0-9]/.test(c)) { return fs * 0.66; }
+    if (/[a-z]/.test(c)) { return fs * 0.56; }
+    return fs * 0.42;
+  }
+  function tw(str, fs) { var w = 0, i; for (i = 0; i < str.length; i++) { w += cw(str.charAt(i), fs); } return w; }
+  function wrap(str, fs, maxW) {
+    var toks = [];
+    str.split(" ").forEach(function (w) {
+      var parts = w.split("\u00b7");
+      parts.forEach(function (p, i) {
+        var t = p + (i < parts.length - 1 ? "\u00b7" : "");
+        if (t) { toks.push({ t: t, sp: i === 0 }); }
+      });
+    });
+    var lines = [], cur = "";
+    toks.forEach(function (k) {
+      var cand = cur === "" ? k.t : cur + (k.sp ? " " : "") + k.t;
+      if (tw(cand, fs) <= maxW) { cur = cand; return; }
+      if (cur) { lines.push(cur); }
+      cur = "";
+      var piece = "", i;
+      for (i = 0; i < k.t.length; i++) {
+        if (tw(piece + k.t.charAt(i), fs) > maxW && piece) { lines.push(piece); piece = ""; }
+        piece += k.t.charAt(i);
+      }
+      cur = piece;
+    });
+    if (cur) { lines.push(cur); }
+    return lines.map(function (l) { return l.replace(/ \u00b7$/, ""); });
+  }
+  var TFS = 14.5, SFS = 11.5, TW = NW - 29, TLH = 17, SLH = 14, maxNeed = 0;
+  NODES.forEach(function (n) {
+    n.tl = wrap(n.title, TFS * 1.05, TW);
+    n.sl = [];
+    n.sub.forEach(function (s) { wrap(s, SFS, TW).forEach(function (l) { n.sl.push(l); }); });
+    n.subY0 = 22 + (n.tl.length - 1) * TLH + 18;
+    var need = n.subY0 + (n.sl.length - 1) * SLH + 12;
+    if (need > maxNeed) { maxNeed = need; }
+  });
+  NH = Math.max(60, Math.ceil(maxNeed));
+  RU = NH + 16;
+
+  var byId = {};
+  NODES.forEach(function (n) {
+    n.x = n.ax != null ? n.ax : COLX[n.col]; n.y = Y0 + n.row * RU; n.w = NW; n.h = NH; byId[n.id] = n;
+  });
+
+  function el(name, attrs, parent, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) { e.setAttribute(k, attrs[k]); }
+    if (text != null) { e.textContent = text; }
+    if (parent) { parent.appendChild(e); }
+    return e;
+  }
+  function h(name, props, parent, text) {
+    var e = document.createElement(name);
+    for (var k in props) { e.setAttribute(k, props[k]); }
+    if (text != null) { e.textContent = text; }
+    if (parent) { parent.appendChild(e); }
+    return e;
+  }
+
+  /* ---------- svg ---------- */
+  var maxY = 0;
+  NODES.forEach(function (n) { if (n.y + n.h > maxY) { maxY = n.y + n.h; } });
+  var H = maxY + 40;
+  var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "group", "aria-label": "심리치료 이론 계보도. 4개 범주 줄과 3개 파생 단계 칸 위에 이론이 놓이고 화살표가 갈라짐과 합침을 나타냅니다." }, null);
+  var defs = el("defs", {}, svg);
+  ETYPES.forEach(function (et) {
+    var m = el("marker", { id: "m-" + et.t, viewBox: "0 0 10 10", refX: "9", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto" }, defs);
+    el("path", { d: "M0,1 L10,5 L0,9 z", "class": "mk-" + et.t }, m);
+  });
+
+  var gBands = el("g", {}, svg), gHead = el("g", {}, svg), gEdges = el("g", {}, svg), gNodes = el("g", {}, svg), gLabels = el("g", {}, svg);
+
+  LANES.forEach(function (ln) {
+    var ns = NODES.filter(function (n) { return n.lane === ln.n; });
+    var top = Math.min.apply(null, ns.map(function (n) { return n.y; })) - 38;
+    var bot = Math.max.apply(null, ns.map(function (n) { return n.y + n.h; })) + 18;
+    el("rect", { x: 10, y: top, width: W - 20, height: bot - top, rx: 12, "class": "band" }, gBands);
+    el("rect", { x: 10, y: top, width: 5, height: bot - top, rx: 2.5, fill: "var(" + CATS[ln.cat].v + ")" }, gBands);
+    el("text", { x: 30, y: top + 23, "class": "lane-label" }, gBands, ln.label);
+  });
+  COLHEAD.forEach(function (c, i) {
+    el("text", { x: COLX[i], y: 30, "class": "col-head" }, gHead, c);
+    el("line", { x1: COLX[i], y1: 38, x2: COLX[i] + NW, y2: 38, stroke: "var(--line)", "stroke-width": 1 }, gHead);
+  });
+
+  function geom(e) {
+    var a = byId[e.a], b = byId[e.b], P, d, anchor = "middle";
+    if (e.down) {
+      var xa = a.x + a.w / 2, ya0 = a.y + a.h, xb = b.x + b.w / 2, yb0 = b.y, dyy = (yb0 - ya0) * 0.5;
+      P = [{ x: xa, y: ya0 }, { x: xa, y: ya0 + dyy }, { x: xb, y: yb0 - dyy }, { x: xb, y: yb0 }];
+      d = "M" + xa + "," + ya0 + " C" + xa + "," + (ya0 + dyy) + " " + xb + "," + (yb0 - dyy) + " " + xb + "," + yb0;
+    } else if (e.vert) {
+      var cx = a.x + a.w / 2, ya = a.y + a.h, yb = b.y;
+      P = [{ x: cx, y: ya }, { x: cx, y: ya }, { x: cx, y: yb }, { x: cx, y: yb }];
+      d = "M" + cx + "," + ya + " L" + cx + "," + yb; anchor = "start";
+    } else if (e.loop) {
+      var x = a.x + a.w, y1 = a.y + a.h / 2, y2 = b.y + b.h / 2, bl = e.loop;
+      P = [{ x: x, y: y1 }, { x: x + bl, y: y1 }, { x: x + bl, y: y2 }, { x: x, y: y2 }];
+      d = "M" + x + "," + y1 + " C" + (x + bl) + "," + y1 + " " + (x + bl) + "," + y2 + " " + x + "," + y2; anchor = "start";
+    } else {
+      var x1 = a.x + a.w, ya2 = a.y + a.h / 2, x2 = b.x, yb2 = b.y + b.h / 2, dx = (x2 - x1) * 0.5;
+      P = [{ x: x1, y: ya2 }, { x: x1 + dx, y: ya2 }, { x: x2 - dx, y: yb2 }, { x: x2, y: yb2 }];
+      d = "M" + x1 + "," + ya2 + " C" + (x1 + dx) + "," + ya2 + " " + (x2 - dx) + "," + yb2 + " " + x2 + "," + yb2;
+    }
+    return { P: P, d: d, anchor: anchor };
+  }
+  function bz(P, t) {
+    var u = 1 - t;
+    return {
+      x: u * u * u * P[0].x + 3 * u * u * t * P[1].x + 3 * u * t * t * P[2].x + t * t * t * P[3].x,
+      y: u * u * u * P[0].y + 3 * u * u * t * P[1].y + 3 * u * t * t * P[2].y + t * t * t * P[3].y
+    };
+  }
+
+  EDGES.forEach(function (e, i) {
+    var g = geom(e);
+    e.g = g;
+    var attrs = { d: g.d, "class": "edge e-" + e.t, "data-i": i };
+    /* arrowheads removed: lines only */
+    e.el = el("path", attrs, gEdges);
+  });
+
+  NODES.forEach(function (n) {
+    var g = el("g", { "class": "node" + (n.origin ? " origin" : ""), tabindex: "0", role: "button", "data-id": n.id, "aria-label": n.title + ", " + CATS[n.cat].name }, gNodes);
+    el("rect", { x: n.x, y: n.y, width: n.w, height: n.h, rx: 9, "class": "box" }, g);
+    el("rect", { x: n.x, y: n.y, width: 5, height: n.h, rx: 2.5, fill: "var(" + CATS[n.cat].v + ")" }, g);
+    n.tl.forEach(function (l, i) { el("text", { x: n.x + 15, y: n.y + 22 + i * TLH, "class": "t", "font-size": TFS }, g, l); });
+    n.sl.forEach(function (l, i) { el("text", { x: n.x + 15, y: n.y + n.subY0 + i * SLH, "class": "s" }, g, l); });
+    if (n.badge) {
+      var pw = n.badge.length * 11 + 16;
+      n.pw = pw;
+      var pg = el("g", { "class": "pill" }, g);
+      el("rect", { x: n.x + n.w - pw - 8, y: n.y - 9, width: pw, height: 18, rx: 9 }, pg);
+      el("text", { x: n.x + n.w - pw / 2 - 8, y: n.y + 4, "text-anchor": "middle" }, pg, n.badge);
+    }
+    n.el = g;
+  });
+
+  document.getElementById("mapbox").appendChild(svg);
+
+  /* ---------- controls ---------- */
+  var legend = document.getElementById("cat-legend");
+  Object.keys(CATS).forEach(function (k) {
+    var s = h("span", { "class": "tag" }, legend);
+    var d = h("span", { "class": "dot" }, s); d.style.background = "var(" + CATS[k].v + ")";
+    s.appendChild(document.createTextNode(CATS[k].name));
+  });
+
+  var hiddenTypes = {};
+  var filters = document.getElementById("edge-filters");
+  ETYPES.forEach(function (et) {
+    var b = h("button", { "class": "chip", type: "button", "aria-pressed": "true", "data-t": et.t }, filters);
+    var s = el("svg", { viewBox: "0 0 28 10" }, null);
+    el("line", { x1: 1, y1: 5, x2: 27, y2: 5, "class": "e-" + et.t, style: "opacity:1" }, s);
+    b.appendChild(s);
+    b.appendChild(document.createTextNode(et.name));
+    b.addEventListener("click", function () {
+      var on = b.getAttribute("aria-pressed") === "true";
+      b.setAttribute("aria-pressed", on ? "false" : "true");
+      hiddenTypes[et.t] = on;
+      render();
+      layoutLabels();
+    });
+  });
+
+  /* ---------- state ---------- */
+  var selected = null;
+
+  function render() {
+    NODES.forEach(function (n) { n.el.classList.toggle("sel", n.id === selected); });
+    EDGES.forEach(function (e) {
+      var hid = !!hiddenTypes[e.t];
+      var inc = (e.a === selected || e.b === selected);
+      e.el.classList.toggle("hidden", hid);
+      e.el.classList.toggle("hot", inc && !hid);
+    });
+  }
+
+  /* Arrow labels are always visible. Each label slides along its curve to the first spot that clears nodes, badges and earlier labels. */
+  function hits(r, list, m) {
+    for (var i = 0; i < list.length; i++) {
+      var o = list[i];
+      if (r.x < o.x + o.w + m && r.x + r.w + m > o.x && r.y < o.y + o.h + m && r.y + r.h + m > o.y) { return true; }
+    }
+    return false;
+  }
+  function layoutLabels() {
+    while (gLabels.firstChild) { gLabels.removeChild(gLabels.firstChild); }
+    return; /* arrow labels removed: lines and arrowheads only */
+    var blocks = [], placed = [];
+    NODES.forEach(function (n) {
+      blocks.push({ x: n.x - 2, y: n.y - 2, w: n.w + 4, h: n.h + 4 });
+      if (n.pw) { blocks.push({ x: n.x + n.w - n.pw - 10, y: n.y - 11, w: n.pw + 4, h: 22 }); }
+    });
+    var BH = 19;
+    EDGES.forEach(function (e) {
+      if (hiddenTypes[e.t]) { return; }
+      var g = el("g", { "class": "elabel l-" + e.t }, gLabels);
+      var r = el("rect", { rx: 5, height: BH }, g);
+      var t = el("text", { "text-anchor": "middle" }, g, e.l);
+      var bw = e.l.length * 12 + 12;
+      try { var bb = t.getBBox(); if (bb.width > 0) { bw = bb.width + 12; } } catch (err) { /* keep estimate */ }
+      var ts = [0.5], k;
+      for (k = 1; k <= 22; k++) { ts.push(0.5 - k * 0.02, 0.5 + k * 0.02); }
+      var best = null, i;
+      for (i = 0; i < ts.length; i++) {
+        var p = bz(e.g.P, ts[i]);
+        var lx = e.g.anchor === "middle" ? p.x - bw / 2 : p.x + 7;
+        var rect = { x: lx, y: p.y - BH / 2, w: bw, h: BH };
+        if (!hits(rect, blocks, 2) && !hits(rect, placed, 3)) { best = rect; break; }
+      }
+      if (!best) {
+        var p0 = bz(e.g.P, 0.5);
+        var lx0 = e.g.anchor === "middle" ? p0.x - bw / 2 : p0.x + 7;
+        best = { x: lx0, y: p0.y - BH / 2, w: bw, h: BH };
+      }
+      placed.push(best);
+      r.setAttribute("x", best.x); r.setAttribute("y", best.y); r.setAttribute("width", best.w);
+      t.setAttribute("x", best.x + best.w / 2); t.setAttribute("y", best.y + 13.6);
+    });
+  }
+
+  function relRow(e, other, dir) {
+    var li = h("li", {}, null);
+    var b = h("button", { type: "button" }, li);
+    b.appendChild(document.createTextNode(dir + " " + other.title + " · " + e.l));
+    b.addEventListener("click", function () { select(other.id, true); });
+    return li;
+  }
+
+  function renderDetail() {
+    var box = document.getElementById("detail");
+    box.textContent = "";
+    if (!selected) { box.style.display = "none"; return; }
+    box.style.display = "";
+    var n = byId[selected];
+    h("h2", {}, box, n.title.replace(/ \(.*\)$/, ""));
+    var meta = h("div", { "class": "meta" }, box);
+    var t1 = h("span", { "class": "tag" }, meta);
+    var d = h("span", { "class": "dot" }, t1); d.style.background = "var(" + CATS[n.cat].v + ")";
+    t1.appendChild(document.createTextNode(CATS[n.cat].name));
+    if (n.badge) { h("span", { "class": "tag" }, meta, n.badge); }
+    h("p", { "class": "who" }, box, n.who);
+    if (n.badge && INTEG[n.badge]) { h("p", { "class": "integ-note" }, box, n.badge + ": " + INTEG[n.badge]); }
+    var ul = h("ul", {}, box);
+    n.pts.forEach(function (p) { h("li", {}, ul, p); });
+    var outs = EDGES.filter(function (e) { return e.a === n.id && !hiddenTypes[e.t]; });
+    var ins = EDGES.filter(function (e) { return e.b === n.id && !hiddenTypes[e.t]; });
+    if (ins.length) {
+      h("h3", {}, box, "이 이론으로 이어지는 흐름");
+      var u1 = h("ul", { "class": "rel" }, box);
+      ins.forEach(function (e) { u1.appendChild(relRow(e, byId[e.a], "←")); });
+    }
+    if (outs.length) {
+      h("h3", {}, box, "이 이론에서 뻗어 나가는 흐름");
+      var u2 = h("ul", { "class": "rel" }, box);
+      outs.forEach(function (e) { u2.appendChild(relRow(e, byId[e.b], "→")); });
+    }
+    h("p", { "class": "hint" }, box, "목록의 이름을 누르면 그 이론으로 이동합니다.");
+  }
+
+  function select(id, fromUser) {
+    selected = id;
+    render(); renderDetail();
+  }
+
+  svg.addEventListener("click", function (ev) {
+    var t = ev.target;
+    while (t && t !== svg) { if (t.classList && t.classList.contains("node")) { return; } t = t.parentNode; }
+    select(null);
+  });
+
+  NODES.forEach(function (n) {
+    n.el.addEventListener("click", function () { select(n.id, true); });
+    n.el.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(n.id, true); }
+    });
+  });
+
+  render();
+  renderDetail();
+  layoutLabels();
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(layoutLabels); }
+})();
+</script>
+</body>
+</html>
